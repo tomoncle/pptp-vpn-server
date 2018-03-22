@@ -5,17 +5,17 @@
 # tomoncle
 
 
-function install_pptp { 
+install_pptp() { 
   sudo apt-get update
   sudo apt-get -y install pptpd
 }
 
-function config_kernel_IP_forwarding {
+config_kernel_IP_forwarding() {
   sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
   sudo sysctl -p
 }
 
-function config_pptp {
+config_pptp() {
   sudo sed -i 's/#localip 192.168.0.1/localip 192.168.0.1/g' /etc/pptpd.conf
   sudo sed -i 's/#remoteip 192.168.0.234-238,192.168.0.245/remoteip 192.168.0.234-238,192.168.0.245/g' /etc/pptpd.conf 
   sudo sed -i 's/#ms-dns 10.0.0.1/ms-dns 8.8.8.8/g' /etc/ppp/pptpd-options
@@ -23,7 +23,7 @@ function config_pptp {
   sudo echo "$username  pptpd  \"$password\"  *" >> /etc/ppp/chap-secrets
 }
 
-function iptables_config {
+iptables_config() {
   sudo apt-get -y install iptables
   sudo iptables -F
   sudo iptables -X
