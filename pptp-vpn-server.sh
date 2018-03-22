@@ -39,10 +39,8 @@ iptables_config() {
 # start shell.
 install_pptp
 
-echo 'Please enter the VPN connection username:'
-read username
-echo 'Please enter the VPN connection password:'
-read password
+read -p "Please enter the VPN connection username:" username
+read -p "Please enter the VPN connection password:" password
 
 config_kernel_IP_forwarding
 iptables_config
