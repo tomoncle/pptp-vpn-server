@@ -7,7 +7,7 @@
 
 function install_pptp { 
   sudo apt-get update
-  sudo apt-get install pptpd
+  sudo apt-get -y install pptpd
 }
 
 function config_kernel_IP_forwarding {
@@ -24,7 +24,7 @@ function config_pptp {
 }
 
 function iptables_config {
-  sudo apt-get install iptables
+  sudo apt-get -y install iptables
   sudo iptables -F
   sudo iptables -X
   sudo iptables -t nat -F
@@ -37,12 +37,13 @@ function iptables_config {
 
 
 # start shell.
+install_pptp
+
 echo 'Please enter the VPN connection username:'
 read username
 echo 'Please enter the VPN connection password:'
 read password
 
-install_pptp
 config_kernel_IP_forwarding
 iptables_config
 config_pptp
