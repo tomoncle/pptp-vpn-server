@@ -15,7 +15,7 @@ install_pptp() {
 }
 
 config_kernel_IP_forwarding() {
-  echo "net.ipv4.ip_forward= 1 " >> /etc/sysctl.conf
+  echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
   sudo sysctl -p
 }
 
@@ -29,10 +29,13 @@ config_pptp() {
 
 iptables_config() {
   sudo yum -y install iptables
-  sudo iptables -I INPUT -p gre -j ACCEPT
-  sudo iptables -I INPUT -p tcp --dport 1723 -j ACCEPT
-  sudo iptables -I INPUT -p tcp --dport 47 -j ACCEPT
-  sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
+  sudo firewall-cmd --permanent --add-masquerade
+  sudo firewall-cmd --permanent --add-port=47/tcp
+  sudo firewall-cmd --permanent --add-port=1723/tcp
+  sudo firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p gre -j ACCEPT
+  sudo firewall-cmd --permanent --direct --passthrough ipv4 -t nat -I POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
+  sudo firewall-cmd --reload
+  sudo systemctl enable pptpd
 }
 
 
